@@ -1,154 +1,7 @@
-// import { useState } from 'react'
-// import './App.css'
-
-// function App() {
-
-//   const [formdata, setformdata] = useState({
-//     myname: '',
-//     uemail: '',
-//     uphone: '',
-//     message: ''
-
-//   })
-
-//   let getvalaue = (event) => {
-//     let olddata = { ...formdata }
-//     let inputName = event.target.name
-//     let InputValue = event.target.value
-//     olddata[inputName] = InputValue
-//     setformdata(olddata)
-  
-//   }
-
-//   const [userdata, currentusrdata] = useState([])
-
-//   let handlesubit = (event) => {
-//     event.preventDefault()
-
-
-//     let currentfromdata = {
-//       uname: formdata.uname,
-//       uemail: formdata.uemail,
-//       uphone: formdata.uphone,
-//       message: formdata.message
-//     }
-
-//     let olduserdata = [...userdata, currentfromdata]
-//     console.log(olduserdata);
-//     currentusrdata(olduserdata)
-//     setformdata({
-//       myname: '',
-//       uemail: '',
-//       uphone: '',
-//       message: ''
-
-//     })
-
-
-
-//   }
-
-//   return (
-//     <div className='flexes'>
-//       <form className='forms' onSubmit={handlesubit} >
-
-
-//         <div className='first-input'>
-//           <label>Name</label>
-//           <input
-//             value={formdata.myname}
-//             type='text'
-//             name='myname'
-//             onChange={getvalaue}
-
-//           />
-//         </div>
-
-//         <div className='first-input'>
-//           <label>Email</label>
-//           <input
-//             value={formdata.uemail}
-//             type='text'
-//             onChange={getvalaue}
-//             name='uemail'
-//           />
-//         </div>
-
-//         <div className='first-input'>
-//           <label>Phone</label>
-//           <input
-//             value={formdata.uphone}
-//             type='text'
-//             name='uphone'
-//             onChange={getvalaue}
-
-//           />
-//         </div>
-
-//         <div className='first-input'>
-//           <label>Message</label>
-//           <textarea
-
-//             className='form-control'
-//             value={formdata.message}
-//             name='message'
-//             onChange={getvalaue}
-
-
-//           />
-//         </div>
-//         <button
-//           className='btn'>
-// Sve        </button>
-
-//       </form>
-//       <table class="table">
-//         <thead>
-//           <tr>
-//             <th scope="col">Id</th>
-//             <th scope="col">Name</th>
-//             <th scope="col">Email</th>
-//             <th scope="col">Phone</th>
-//             <th scope="col">Message</th>
-//             <th scope="col">Action</th>
-//           </tr>
-//         </thead>
-//         {userdata.length > 1 ?
-
-//           userdata.map((obj, i) => {
-//             return (
-//               <tr key={i}>
-//                 <th scope="row">{i +1}</th>
-//                 <td>{obj.uname}</td>
-//                 <td>{obj.uemail}</td>
-//                 <td>{obj.uphone}</td>
-//                 <td>{obj.message}</td>
-//                 <td><button>Delete</button> and <button>Edit</button></td>
-//               </tr>
-//             )
-//           })
-          
-//       :
-//       <tr>
-//         Userdata not found
-//       </tr>
-
-
-
-// }
-
-//     </table>
-//     </div >
-//   )
-// }
-
-// export default App
-
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-
   const [formdata, setformdata] = useState({
     myname: '',
     uemail: '',
@@ -157,37 +10,37 @@ function App() {
   });
 
   const [userdata, currentusrdata] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  let getvalue = (event) => {
-    let inputName = event.target.name;
-    let InputValue = event.target.value;
+  const getvalue = (event) => {
+    const { name, value } = event.target;
     setformdata(prevData => ({
       ...prevData,
-      [inputName]: InputValue
+      [name]: value
     }));
   };
 
-  let handlesubmit = (event) => {
+  const handlesubmit = (event) => {
     event.preventDefault();
 
     // Check if email or phone number already exists
-    let check = userdata.filter((v) => {
+    const check = userdata.filter((v) => {
       return v.uemail === formdata.uemail || v.uphone === formdata.uphone;
     });
 
     if (check.length > 0) {
-      let elert = "Sorry ! phone number and email already Exist"
+      setErrorMessage("Sorry! Email and phone number already exist.");
       return;
     }
 
-    let currentformdata = {
+    const currentformdata = {
       uname: formdata.myname,
       uemail: formdata.uemail,
       uphone: formdata.uphone,
       message: formdata.message
     };
 
-    let olduserdata = [...userdata, currentformdata];
+    const olduserdata = [...userdata, currentformdata];
     console.log(olduserdata);
     currentusrdata(olduserdata);
     setformdata({
@@ -196,6 +49,7 @@ function App() {
       uphone: '',
       message: ''
     });
+    setErrorMessage('');  // Clear error message after successful submission
   };
 
   return (
@@ -240,11 +94,10 @@ function App() {
             onChange={getvalue}
           />
         </div>
-        <button className='btn'>
+        <button className='btn' type="submit">
           {formdata.index !== '' ? "save" : 'update'}
-
         </button>
-        
+        {errorMessage && <div className='error-message'>{errorMessage}</div>}
       </form>
 
       <table className="table">
@@ -280,7 +133,7 @@ function App() {
         </tbody>
       </table>
     </div >
-  )
+  );
 }
 
 export default App;
