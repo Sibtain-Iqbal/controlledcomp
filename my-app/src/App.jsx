@@ -52,6 +52,13 @@ function App() {
     setErrorMessage('');  // Clear error message after successful submission
   };
 
+  let deltetrow = (indexnumber)=>{
+    let filterdata =userdata.filter((v,i)=>{
+      i!= indexnumber
+    })
+    currentusrdata(filterdata)
+    
+  }
   return (
     <div className='flexes'>
       <form className='forms' onSubmit={handlesubmit}>
@@ -121,7 +128,7 @@ function App() {
                   <td>{obj.uemail}</td>
                   <td>{obj.uphone}</td>
                   <td>{obj.message}</td>
-                  <td><button>Delete</button> <button>Edit</button></td>
+                  <td><button onClick={()=>deltetrow(i)}>Delete</button> <button>Edit</button></td>
                 </tr>
               )
             })
