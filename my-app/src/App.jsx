@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import {toast} from 'react-toastify'
 function App() {
   const [formdata, setformdata] = useState({
     myname: '',
@@ -29,6 +31,7 @@ function App() {
     });
 
     if (check.length > 0) {
+      toast.error("Email and phone number already exist")
       setErrorMessage("Sorry! Email and phone number already exist.");
       return;
     }
@@ -57,10 +60,18 @@ function App() {
       i!= indexnumber
     })
     currentusrdata(filterdata)
+    toast.success("the file was delete succesfully !")
     
+  }
+  const updaterow = (indexnum)=>{
+    // toast.success(index)
+    const edit = userdata.filter((v,i)=> i==indexnum)
+  edit['index'] = indexnum;
+ setformdata(edit)
   }
   return (
     <div className='flexes'>
+      <ToastContainer/>
       <form className='forms' onSubmit={handlesubmit}>
         <div className='first-input'>
           <label>Name</label>
@@ -128,7 +139,7 @@ function App() {
                   <td>{obj.uemail}</td>
                   <td>{obj.uphone}</td>
                   <td>{obj.message}</td>
-                  <td><button onClick={()=>deltetrow(i)}>Delete</button> <button>Edit</button></td>
+                  <td><button onClick={()=>deltetrow(i)}>Delete</button> <button onClick={()=>updaterow(i)}>Edit</button></td>
                 </tr>
               )
             })
